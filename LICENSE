@@ -1,0 +1,70 @@
+Reverie Brand — Licensing
+
+This repository contains two categories of material under different terms.
+
+------------------------------------------------------------------------
+1. Documentation and reference material
+------------------------------------------------------------------------
+
+The following files are licensed under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0):
+
+  - identity.md
+  - index.html
+  - proportions/slot-construction.svg
+
+You are free to:
+
+  - Share — copy and redistribute the material in any medium or format
+  - Adapt — remix, transform, and build upon the material for any
+    purpose, even commercially
+
+Under the following terms:
+
+  - Attribution — You must give appropriate credit, provide a link to
+    the license, and indicate if changes were made. You may do so in
+    any reasonable manner, but not in any way that suggests the
+    licensor endorses you or your use.
+
+  - No additional restrictions — You may not apply legal terms or
+    technological measures that legally restrict others from doing
+    anything the license permits.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+------------------------------------------------------------------------
+2. Marks and brand assets
+------------------------------------------------------------------------
+
+The following files, and any derivative thereof, are the trademarks
+and copyrighted brand assets of John Junkovich and identify the
+"Reverie" software project:
+
+  - glyph/*
+  - lockup/*
+  - raster/*
+
+Copyright (c) 2026 John Junkovich. All rights reserved.
+
+These assets MAY be used to:
+
+  - Refer to the Reverie software project in editorial, journalistic,
+    or educational contexts (e.g. articles, tutorials, talks).
+  - Link to or identify a self-hosted Reverie instance you operate.
+
+These assets MAY NOT be used to:
+
+  - Identify any product, service, or software project that is not
+    Reverie or an unmodified distribution of Reverie.
+  - Suggest sponsorship, endorsement, or affiliation with the Reverie
+    project that does not exist.
+  - Sell merchandise bearing these marks without prior written
+    permission from John Junkovich.
+
+If you fork Reverie and rebrand the result, replace these marks with
+your own. The MIT-licensed code in the Reverie product repository is
+yours to fork and modify; the brand identity is not.
+
+------------------------------------------------------------------------
+
+For permissions beyond the above, contact: unkovich.john@gmail.com

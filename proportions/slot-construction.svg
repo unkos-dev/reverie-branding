@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="640" height="640">
+<rect width="320" height="320" fill="#1A1714"></rect>
+<g stroke="#5A4F3A" stroke-width="0.5" opacity="0.4">
+  <line x1="40" y1="40" x2="40" y2="280"></line><line x1="47.5" y1="40" x2="47.5" y2="280"></line><line x1="55" y1="40" x2="55" y2="280"></line><line x1="62.5" y1="40" x2="62.5" y2="280"></line><line x1="70" y1="40" x2="70" y2="280"></line><line x1="77.5" y1="40" x2="77.5" y2="280"></line><line x1="85" y1="40" x2="85" y2="280"></line><line x1="92.5" y1="40" x2="92.5" y2="280"></line><line x1="100" y1="40" x2="100" y2="280"></line><line x1="107.5" y1="40" x2="107.5" y2="280"></line><line x1="115" y1="40" x2="115" y2="280"></line><line x1="122.5" y1="40" x2="122.5" y2="280"></line><line x1="130" y1="40" x2="130" y2="280"></line><line x1="137.5" y1="40" x2="137.5" y2="280"></line><line x1="145" y1="40" x2="145" y2="280"></line><line x1="152.5" y1="40" x2="152.5" y2="280"></line><line x1="160" y1="40" x2="160" y2="280"></line><line x1="167.5" y1="40" x2="167.5" y2="280"></line><line x1="175" y1="40" x2="175" y2="280"></line><line x1="182.5" y1="40" x2="182.5" y2="280"></line><line x1="190" y1="40" x2="190" y2="280"></line><line x1="197.5" y1="40" x2="197.5" y2="280"></line><line x1="205" y1="40" x2="205" y2="280"></line><line x1="212.5" y1="40" x2="212.5" y2="280"></line><line x1="220" y1="40" x2="220" y2="280"></line><line x1="227.5" y1="40" x2="227.5" y2="280"></line><line x1="235" y1="40" x2="235" y2="280"></line><line x1="242.5" y1="40" x2="242.5" y2="280"></line><line x1="250" y1="40" x2="250" y2="280"></line><line x1="257.5" y1="40" x2="257.5" y2="280"></line><line x1="265" y1="40" x2="265" y2="280"></line><line x1="272.5" y1="40" x2="272.5" y2="280"></line><line x1="280" y1="40" x2="280" y2="280"></line>
+  <line x1="40" y1="40" x2="280" y2="40"></line><line x1="40" y1="47.5" x2="280" y2="47.5"></line><line x1="40" y1="55" x2="280" y2="55"></line><line x1="40" y1="62.5" x2="280" y2="62.5"></line><line x1="40" y1="70" x2="280" y2="70"></line><line x1="40" y1="77.5" x2="280" y2="77.5"></line><line x1="40" y1="85" x2="280" y2="85"></line><line x1="40" y1="92.5" x2="280" y2="92.5"></line><line x1="40" y1="100" x2="280" y2="100"></line><line x1="40" y1="107.5" x2="280" y2="107.5"></line><line x1="40" y1="115" x2="280" y2="115"></line><line x1="40" y1="122.5" x2="280" y2="122.5"></line><line x1="40" y1="130" x2="280" y2="130"></line><line x1="40" y1="137.5" x2="280" y2="137.5"></line><line x1="40" y1="145" x2="280" y2="145"></line><line x1="40" y1="152.5" x2="280" y2="152.5"></line><line x1="40" y1="160" x2="280" y2="160"></line><line x1="40" y1="167.5" x2="280" y2="167.5"></line><line x1="40" y1="175" x2="280" y2="175"></line><line x1="40" y1="182.5" x2="280" y2="182.5"></line><line x1="40" y1="190" x2="280" y2="190"></line><line x1="40" y1="197.5" x2="280" y2="197.5"></line><line x1="40" y1="205" x2="280" y2="205"></line><line x1="40" y1="212.5" x2="280" y2="212.5"></line><line x1="40" y1="220" x2="280" y2="220"></line><line x1="40" y1="227.5" x2="280" y2="227.5"></line><line x1="40" y1="235" x2="280" y2="235"></line><line x1="40" y1="242.5" x2="280" y2="242.5"></line><line x1="40" y1="250" x2="280" y2="250"></line><line x1="40" y1="257.5" x2="280" y2="257.5"></line><line x1="40" y1="265" x2="280" y2="265"></line><line x1="40" y1="272.5" x2="280" y2="272.5"></line><line x1="40" y1="280" x2="280" y2="280"></line>
+</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M70 70h180v180H70V70zm30 97.5h120v15H100v-15z" fill="#C9A961"></path>
+<g stroke="#C9A961" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.7" fill="none">
+  <line x1="40" y1="70" x2="65" y2="70"></line>
+  <line x1="40" y1="250" x2="65" y2="250"></line>
+  <line x1="70" y1="285" x2="70" y2="295"></line>
+  <line x1="250" y1="285" x2="250" y2="295"></line>
+  <line x1="285" y1="167.5" x2="295" y2="167.5"></line>
+  <line x1="285" y1="182.5" x2="295" y2="182.5"></line>
+</g>
+<g font-family="ui-monospace, Menlo, monospace" font-size="9" fill="#E8E0D0" opacity="0.85">
+  <text x="20" y="73">04</text>
+  <text x="20" y="253">28</text>
+  <text x="65" y="305">04</text>
+  <text x="245" y="305">28</text>
+  <text x="295" y="170">17</text>
+  <text x="295" y="185">19</text>
+</g>
+<g font-family="Satoshi, system-ui, sans-serif" font-size="11" fill="#E8E0D0" opacity="0.7" letter-spacing="1.5">
+  <text x="40" y="32">32-UNIT GRID · BLOCK 24 · SLOT 16 × 2 AT Y=17</text>
+</g>
+</svg>

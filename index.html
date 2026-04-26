@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Reverie · Brand Asset Browser</title>
+<link rel="icon" type="image/svg+xml" href="glyph/slot-favicon.svg"/>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin/>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f=author@400,500,600,700,400i,500i,600i&f=satoshi@400,500,700&display=swap"/>
+<style>
+  :root {
+    --ink: #0E0D0A;
+    --canvas: #14120E;
+    --canvas-2: #1A1812;
+    --surface: #221F18;
+    --border: #2E2A22;
+    --border-strong: #3A3528;
+    --fg: #E8E0D0;
+    --fg-muted: #A8A090;
+    --fg-faint: #6E6858;
+    --gold: #C9A961;
+    --parchment: #E8DCC2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--canvas);
+    color: var(--fg);
+    font-family: Satoshi, system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 64px 48px 120px; }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .header-left .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .header-left h1 {
+    margin: 0;
+    font-family: Author, system-ui, sans-serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+  }
+  .header-left .sub {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--fg-muted);
+    max-width: 560px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .lockup-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .lockup-mini .word {
+    font-family: Satoshi, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    padding-left: 0.32em;
+  }
+
+  /* Section */
+  section { margin-top: 64px; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  .section-head h2 {
+    margin: 0;
+    font-family: Author, system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+  }
+  .section-head .count {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* Tile */
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .tile:hover {
+    border-color: var(--border-strong);
+  }
+  .preview {
+    aspect-ratio: 4 / 3;
+    background: var(--canvas-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .preview.dark { background: var(--ink); }
+  .preview.parchment { background: var(--parchment); }
+  .preview.checker {
+    background-color: var(--canvas-2);
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,0.025) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(255,255,255,0.025) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.025) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.025) 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  }
+  .preview img,
+  .preview object,
+  .preview svg {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
+  .meta {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .meta .name {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg);
+    letter-spacing: 0.02em;
+    word-break: break-all;
+    line-height: 1.35;
+  }
+  .meta .download {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid color-mix(in oklch, var(--gold) 30%, transparent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: background 120ms ease;
+  }
+  .meta .download:hover {
+    background: color-mix(in oklch, var(--gold) 15%, transparent);
+  }
+  .desc {
+    padding: 0 16px 14px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+
+  /* Specials */
+  .raster-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .raster-row img { background: transparent; }
+
+  /* Doc card */
+  .doc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .doc-card .left h3 {
+    margin: 0;
+    font-family: Author, system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+  }
+  .doc-card .left p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--fg-muted);
+    max-width: 560px;
+  }
+  .doc-card .actions { display: flex; gap: 10px; }
+  .btn {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border: 1px solid color-mix(in oklch, var(--gold) 30%, transparent);
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: background 120ms ease;
+  }
+  .btn:hover { background: color-mix(in oklch, var(--gold) 15%, transparent); }
+  .btn.solid {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .btn.solid:hover { background: color-mix(in oklch, var(--gold) 88%, white); }
+
+  /* Color chips */
+  .colors { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .chip .swatch { height: 96px; }
+  .chip .info { padding: 12px 14px; }
+  .chip .info .title { font-family: Author, system-ui, sans-serif; font-size: 16px; }
+  .chip .info .hex { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg-muted); margin-top: 2px; }
+
+  /* Type spec */
+  .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .type-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+  }
+  .type-card .label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    margin-bottom: 16px;
+  }
+  .type-card .specimen-line {
+    margin: 0;
+    line-height: 1.1;
+  }
+  .type-card .a { font-family: Author, system-ui, sans-serif; font-size: 56px; font-weight: 500; letter-spacing: -0.012em; }
+  .type-card .a-it { font-family: Author, system-ui, sans-serif; font-style: italic; font-size: 32px; font-weight: 400; color: var(--gold); margin-top: 8px; letter-spacing: -0.012em; }
+  .type-card .s { font-family: Satoshi, system-ui, sans-serif; font-size: 32px; font-weight: 700; }
+  .type-card .s-body { font-family: Satoshi, system-ui, sans-serif; font-size: 15px; font-weight: 400; color: var(--fg-muted); margin-top: 14px; line-height: 1.55; }
+  .type-card .meta-row {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--fg-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* Tagline card */
+  .tagline-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 48px 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .tagline-line {
+    font-family: Author, system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 36px;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    margin-bottom: 28px;
+  }
+  .tagline-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    width: 100%;
+    max-width: 720px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+  .tagline-meta .tag-key {
+    display: inline-block;
+    min-width: 56px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    margin-right: 8px;
+  }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 20px 80px; }
+    .header-left h1 { font-size: 32px; }
+    .type-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-left">
+    <div class="eyebrow">● Reverie · Brand assets</div>
+    <h1>Asset browser</h1>
+    <div class="sub">Every locked-direction asset for the Reverie identity. Click any tile to view full-size or download. SVG is preferred wherever it works; raster fallbacks are listed below.</div>
+  </div>
+  <div class="header-right">
+    <div class="lockup-mini">
+      <svg width="38" height="38" viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" fill="#C9A961"/><rect x="8" y="17" width="16" height="2" fill="#14120E"/></svg>
+      <span class="word">REVERIE</span>
+    </div>
+  </div>
+</header>
+
+<!-- Tagline card -->
+<section style="margin-top: 0;">
+  <div class="section-head">
+    <h2>Tagline</h2>
+    <span class="count">1 line · canonical</span>
+  </div>
+  <div class="tagline-card">
+    <div class="tagline-line">Your library, catalogued.</div>
+    <div class="tagline-meta">
+      <div><span class="tag-key">Set in</span> Author 400, sentence case</div>
+      <div><span class="tag-key">Use</span> OG card · meta · app store · README · footer · hero subhead</div>
+      <div><span class="tag-key">Don't</span> substitute synonyms · drop the comma · pair with a second tagline · set in Satoshi</div>
+    </div>
+  </div>
+</section>
+
+<!-- Identity doc card -->
+<div class="doc-card" style="margin-top: 32px;">
+  <div class="left">
+    <h3>Identity document</h3>
+    <p>The full reference: mark meaning, tagline, construction grid, color, typography, lockup rules, don'ts, and asset index. Read this before introducing the brand to a new context.</p>
+  </div>
+  <div class="actions">
+    <a class="btn solid" href="identity.md" target="_blank" rel="noopener">Open</a>
+    <a class="btn" href="identity.md" download>Download .md</a>
+  </div>
+</div>
+
+<!-- Glyph -->
+<section>
+  <div class="section-head">
+    <h2>Glyph</h2>
+    <span class="count">6 files · brand/glyph/</span>
+  </div>
+  <div class="grid" id="glyph-grid"></div>
+</section>
+
+<!-- Lockup -->
+<section>
+  <div class="section-head">
+    <h2>Lockup</h2>
+    <span class="count">6 files · brand/lockup/</span>
+  </div>
+  <div class="grid" id="lockup-grid"></div>
+</section>
+
+<!-- Raster -->
+<section>
+  <div class="section-head">
+    <h2>Raster</h2>
+    <span class="count">8 files · brand/raster/</span>
+  </div>
+  <div class="grid" id="raster-grid"></div>
+</section>
+
+<!-- Construction -->
+<section>
+  <div class="section-head">
+    <h2>Construction</h2>
+    <span class="count">1 file · brand/proportions/</span>
+  </div>
+  <div class="grid" id="proportions-grid"></div>
+</section>
+
+<!-- Color -->
+<section>
+  <div class="section-head">
+    <h2>Color</h2>
+    <span class="count">4 tokens</span>
+  </div>
+  <div class="colors">
+    <div class="chip"><div class="swatch" style="background:#C9A961"></div><div class="info"><div class="title">Reverie Gold</div><div class="hex">#C9A961 · the only accent</div></div></div>
+    <div class="chip"><div class="swatch" style="background:#0E0D0A"></div><div class="info"><div class="title">Ink</div><div class="hex">#0E0D0A · dark canvas</div></div></div>
+    <div class="chip"><div class="swatch" style="background:#E8E0D0"></div><div class="info"><div class="title">Cream</div><div class="hex">#E8E0D0 · wordmark on dark</div></div></div>
+    <div class="chip"><div class="swatch" style="background:#E8DCC2"></div><div class="info"><div class="title">Parchment</div><div class="hex">#E8DCC2 · light theme canvas</div></div></div>
+  </div>
+</section>
+
+<!-- Typography -->
+<section>
+  <div class="section-head">
+    <h2>Typography</h2>
+    <span class="count">2 families · Author / Satoshi</span>
+  </div>
+  <div class="type-grid">
+    <div class="type-card">
+      <div class="label">Display · Author</div>
+      <p class="specimen-line a">Reverie</p>
+      <p class="specimen-line a-it">Your library, catalogued.</p>
+      <p class="s-body">Used for hero text, book titles, italic accents. Editorial work — places where the typeface itself should speak.</p>
+      <div class="meta-row">Author · 500 / italic 400 · -0.012em</div>
+    </div>
+    <div class="type-card">
+      <div class="label">Workhorse · Satoshi</div>
+      <p class="specimen-line s">REVERIE</p>
+      <p class="s-body">Used for body copy, navigation, controls, and the wordmark itself. Structural work — neutral grotesque that gets out of the way.</p>
+      <div class="meta-row">Satoshi · 700 wordmark / 400–500 body · 0.32em wordmark / 0 body</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+const ASSETS = {
+  glyph: [
+    { file: 'glyph/slot.svg',              bg: 'checker',     desc: 'Canonical. Gold on transparent. Use this whenever possible.' },
+    { file: 'glyph/slot-favicon.svg',      bg: 'checker',     desc: 'Small-size fallback variant. Thicker slot — use below 24px.' },
+    { file: 'glyph/slot-on-dark.svg',      bg: '',            desc: 'Pre-framed on Ink background. Use on light surfaces.' },
+    { file: 'glyph/slot-on-parchment.svg', bg: 'parchment',   desc: 'Pre-framed on Parchment background.' },
+    { file: 'glyph/slot-mono-light.svg',   bg: 'dark',        desc: 'Cream on transparent. Single-color light contexts.' },
+    { file: 'glyph/slot-mono-dark.svg',    bg: 'parchment',   desc: 'Ink on transparent. Single-color dark contexts.' },
+  ],
+  lockup: [
+    { file: 'lockup/lockup-on-dark.svg',     bg: 'dark',      desc: 'Canonical for dark UI. Gold + Cream.' },
+    { file: 'lockup/lockup-on-light.svg',    bg: 'parchment', desc: 'Canonical for light UI. Gold + Ink.' },
+    { file: 'lockup/lockup-framed-dark.svg', bg: 'checker',   desc: 'Pre-framed Ink panel. Use on imagery / photo backgrounds.' },
+    { file: 'lockup/lockup-framed-light.svg',bg: 'checker',   desc: 'Pre-framed Parchment panel. Use on dark imagery.' },
+    { file: 'lockup/lockup-mono-light.svg',  bg: 'dark',      desc: 'All-Cream. Single-color light contexts.' },
+    { file: 'lockup/lockup-mono-dark.svg',   bg: 'parchment', desc: 'All-Ink. Single-color dark contexts.' },
+  ],
+  raster: [
+    { file: 'raster/favicon-16.png',           bg: 'checker',  desc: 'Browser tab favicon · 16×16. Legacy fallback.' },
+    { file: 'raster/favicon-32.png',           bg: 'checker',  desc: 'Browser tab favicon · 32×32.' },
+    { file: 'raster/favicon-48.png',           bg: 'checker',  desc: 'Windows shortcut · 48×48.' },
+    { file: 'raster/apple-touch-icon-180.png', bg: 'checker',  desc: 'iOS home-screen icon · 180×180. Framed.' },
+    { file: 'raster/glyph-256.png',            bg: 'checker',  desc: 'Standalone glyph · 256×256.' },
+    { file: 'raster/glyph-512.png',            bg: 'checker',  desc: 'App store master · 512×512.' },
+    { file: 'raster/glyph-1024.png',           bg: 'checker',  desc: 'macOS app icon · 1024×1024.' },
+    { file: 'raster/og-card-1200x630.png',     bg: '',         desc: 'Open Graph / Twitter share image · 1200×630.' },
+  ],
+  proportions: [
+    { file: 'proportions/slot-construction.svg', bg: '', desc: 'Annotated grid diagram. For documentation only — not for production use.' },
+  ],
+};
+
+function tile(asset) {
+  const name = asset.file.split('/').pop();
+  const isImg = /\.(png|jpg|jpeg|gif)$/i.test(asset.file);
+  const previewMarkup = isImg
+    ? `<img src="${asset.file}" alt="${name}" loading="lazy" />`
+    : `<object type="image/svg+xml" data="${asset.file}" aria-label="${name}"></object>`;
+  return `
+    <div class="tile">
+      <div class="preview ${asset.bg || ''}">${previewMarkup}</div>
+      <div class="meta">
+        <div class="name">${name}</div>
+        <a class="download" href="${asset.file}" download>Get</a>
+      </div>
+      <div class="desc">${asset.desc}</div>
+    </div>
+  `;
+}
+
+document.getElementById('glyph-grid').innerHTML = ASSETS.glyph.map(tile).join('');
+document.getElementById('lockup-grid').innerHTML = ASSETS.lockup.map(tile).join('');
+document.getElementById('raster-grid').innerHTML = ASSETS.raster.map(tile).join('');
+document.getElementById('proportions-grid').innerHTML = ASSETS.proportions.map(tile).join('');
+</script>
+</body>
+</html>
