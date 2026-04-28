@@ -85,17 +85,45 @@ thicker so the carved gesture survives.
 
 Reverie uses two paint values plus a near-black canvas.
 
-| Token       | Value     | Use                                              |
-| ----------- | --------- | ------------------------------------------------ |
-| Reverie Gold| `#C9A961` | The glyph fill. The accent. Single source of glow. |
-| Ink         | `#0E0D0A` | Dark canvas. Wordmark on light surfaces.         |
-| Cream       | `#E8E0D0` | Wordmark on dark surfaces.                       |
-| Parchment   | `#E8DCC2` | Light theme canvas.                              |
+| Token            | Value     | Use                                              |
+| ---------------- | --------- | ------------------------------------------------ |
+| Reverie Gold     | `#C9A961` | The glyph fill. The accent on dark surfaces. Single source of glow. |
+| Reverie Gold (Light) | `#8E6F38` | The accent on Parchment. Darkened for legibility (see below). |
+| Ink              | `#0E0D0A` | Dark canvas. Wordmark on light surfaces.         |
+| Cream            | `#E8E0D0` | Wordmark on dark surfaces.                       |
+| Parchment        | `#E8DCC2` | Light theme canvas.                              |
 
 **Reverie Gold is the only accent color.** Do not introduce additional
 accents (red, blue, green) for status, navigation, or decoration. State
 should be communicated through weight, opacity, and the gold accent —
 never through hue.
+
+### Light-theme accent: a deliberate constraint
+
+On Parchment, Reverie Gold at `#C9A961` does not meet WCAG AA contrast
+(it falls under 3:1 against `#E8DCC2`). The light-theme accent darkens
+to `#8E6F38`. The gold *register* is preserved — warm metallic — and
+the *value* shifts only as far as legibility forces.
+
+`#8E6F38` on Parchment passes WCAG 2.2 1.4.11 (UI component 3:1) and
+1.4.3 large-text (≥ 18pt regular or ≥ 14pt bold), but does **not**
+pass 1.4.3 normal-text (4.5:1). This is a brand-locked trade-off:
+darkening further compromises gold-hue identity, and the alternative
+(introducing a second high-contrast hue for body text) violates the
+single-accent rule above.
+
+The mitigation is restriction. On light surfaces, the accent is used
+only for:
+
+- Focus rings
+- Large CTAs (the primary action on a surface)
+- Recovery actions (the gesture out of an error state)
+
+It is **not** used for normal-size body text, links, inline emphasis,
+or any chrome that runs at the body type scale. axe-core will surface
+contrast violations on any light surface that breaks this rule, and
+those violations are the right signal — they mean the surface is
+misusing the accent, not that the accent is wrong.
 
 ---
 
@@ -163,6 +191,10 @@ holds.
 - Do not apply effects (shadow, glow, gradient, bevel, outline).
 - Do not use the wordmark alone as a primary mark.
 - Do not introduce additional accent colors. Gold is the only accent.
+- Do not use Reverie Gold on Parchment for normal-size body text. The
+  light-theme accent (`#8E6F38`) passes WCAG large-text contrast only;
+  body type on a gold fill fails AA. Restrict to focus rings, large
+  CTAs, and recovery actions on light surfaces.
 
 ---
 
