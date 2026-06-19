@@ -83,29 +83,28 @@ thicker so the carved gesture survives.
 
 ## 4. Color
 
-Reverie has two colors with semantic weight: an **accent** and an
-**alarm**. They sit on different axes and do different work.
+Reverie has two colors with semantic weight: an **accent** and a
+**danger** hue. They sit on different axes and do different work.
 
 The accent says *"this matters."* It marks state — focus, selection,
 completion, the active surface. It is Reverie Gold and there is exactly
 one.
 
-The alarm says *"stop."* It marks irreversibility and unrecoverable
-error. It is Reverie Alarm and there is exactly one.
+The danger hue says *"stop."* It marks irreversibility and unrecoverable
+error. It is Reverie Danger and there is exactly one.
 
 These are not two members of a severity palette. They are two
 punctuation marks on the page, each used sparingly, each meaning one
 thing.
 
-Beyond accent and alarm, Reverie uses a near-black canvas (Ink), a
+Beyond accent and danger, Reverie uses a near-black canvas (Ink), a
 paper-warm light canvas (Parchment), and a single off-white (Cream).
 
 | Token                 | Value     | Use                                                                 |
 | --------------------- | --------- | ------------------------------------------------------------------- |
 | Reverie Gold          | `#C9A961` | The accent on dark surfaces. Glyph fill. Single source of glow.     |
-| Reverie Gold (Light)  | `#8E6F38` | The accent on Parchment. Darkened for legibility (see below).       |
-| Reverie Alarm         | `#F26C7B` | The alarm on dark surfaces. Fill only, never body text.             |
-| Reverie Alarm (Light) | `#BC2937` | The alarm on Parchment. Fill only, never body text.                 |
+| Reverie Gold (Light)  | `#A77C00` | The accent on Parchment (`gold-9`). Fill-first; sub-3:1 as a line.   |
+| Reverie Danger        | `#B91C1C` | Destructive/error solid. White text on the fill; never body text.   |
 | Ink                   | `#0E0D0A` | Dark canvas. Wordmark on light surfaces.                            |
 | Cream                 | `#E8E0D0` | Wordmark on dark surfaces.                                          |
 | Parchment             | `#E8DCC2` | Light theme canvas.                                                 |
@@ -114,43 +113,104 @@ State, hierarchy, and emphasis below the level of "this matters" or
 "stop" are communicated through **weight, opacity, type scale, density,
 and motion** — never through additional hues.
 
+### The generated palette
+
+The colours above are **anchors, not the whole palette.** Reverie's working
+colour comes from three **generated 12-step scales** — a warm neutral (*sand*),
+the gold accent, and danger — produced for *both* themes from the brand
+anchors. Reverie Gold is the accent scale's solid step; Reverie Danger is the
+danger scale's solid step; Ink and Parchment are the page backgrounds; the
+neutral ramp is seeded from a warm low-chroma grey. The brand hexes survive
+**verbatim** at the solid step; the rest of each scale is derived around them.
+
+The scales are computed with Radix's `generateRadixColors` (the function behind
+`radix-ui.com/colors/custom`) — deterministic, reproducible, and vendored as
+static CSS (no runtime dependency). Same inputs, byte-identical output:
+
+| Input              | Value                                                     |
+| ------------------ | --------------------------------------------------------- |
+| Generator          | `generateRadixColors` (`radix-ui/website`), `@radix-ui/colors@3.0.0` |
+| Background — dark  | Ink `#0E0D0A`                                             |
+| Background — light | Parchment `#E8DCC2`                                       |
+| Accent seed        | Reverie Gold `#C9A961`                                    |
+| Danger seed        | Reverie Danger `#B91C1C`                                  |
+| Neutral seed       | warm low-chroma grey `#8A8170`                            |
+
+**Step = role.** In every 12-step scale the step number *is* a fixed UI role,
+with contrast guaranteed by construction — the point of generating rather than
+hand-tuning (it ends the manual AA-bump bookkeeping hand-built ramps needed):
+
+| Step | Role                       | Step | Role                            |
+| ---- | -------------------------- | ---- | ------------------------------- |
+| 1    | app background             | 7    | element border / focus ring     |
+| 2    | subtle background          | 8    | hovered border                  |
+| 3    | UI element background      | 9    | **solid — the anchor colour**   |
+| 4    | hovered element bg         | 10   | hovered solid                   |
+| 5    | active / selected bg       | 11   | low-contrast text (≥ 4.5:1)     |
+| 6    | subtle border / separator  | 12   | high-contrast text (body)       |
+
+**One direction of reference.** Raw colour lives only in the generated scales.
+Everything downstream names a *role* — surface, border, text, accent, danger —
+and the role resolves to a scale step; components never name a hex. Adding a
+colour means regenerating the scales (a reviewed change), never hand-picking a
+value. Art-directed editorial colour (gilt, cloth, vellum — the *atmosphere*) is
+a separate, sealed namespace that product chrome never reads.
+
+Both themes are generated together, so light and dark stay in lockstep: a role
+resolves to the theme-appropriate step automatically. There is no second,
+hand-maintained light palette to drift.
+
+### Text is structurally neutral
+
+Body and primary text are the neutral ink at full strength — Ink
+`#0E0D0A` on light surfaces, Cream `#E8E0D0` on dark. Secondary and
+muted text step down the *same* neutral (a dimmer value or reduced
+opacity); tertiary, non-essential text steps down once more. The whole
+text hierarchy is built from one neutral at descending strength.
+
+This makes the single-accent rule structural, not just a prohibition:
+because running text is neutral *by definition*, gold and danger are
+never body-text colours — there is no case where a hue carries prose.
+The light-theme gold constraint below and the danger fill-only rule are
+both corollaries — hues are punctuation, the neutral is prose.
+
 ### Light-theme accent: a deliberate constraint
 
-On Parchment, Reverie Gold at `#C9A961` does not meet WCAG AA contrast
-(it falls under 3:1 against `#E8DCC2`). The light-theme accent darkens
-to `#8E6F38`. The gold *register* is preserved — warm metallic — and
-the *value* shifts only as far as legibility forces.
+On Parchment, gold cannot be both itself and high-contrast. Reverie Gold
+at `#C9A961` falls under 3:1 against `#E8DCC2`; the generated light accent
+(`gold-9`, `#A77C00`) is darker but still only ≈ 2.8:1 — *below* the WCAG
+2.2 1.4.11 3:1 floor as a line or as text. Darkening far enough to clear it
+would stop reading as gold. So the gap is closed by *how the accent is
+used*, not by bending the hue toward brown — the gold identity is preserved
+and the single-accent rule holds (no second high-contrast hue for text).
 
-`#8E6F38` on Parchment passes WCAG 2.2 1.4.11 (UI component 3:1) and
-1.4.3 large-text (≥ 18pt regular or ≥ 14pt bold), but does **not**
-pass 1.4.3 normal-text (4.5:1). This is a brand-locked trade-off:
-darkening further compromises gold-hue identity, and the alternative
-(introducing a second high-contrast hue for body text) violates the
-single-accent rule above.
+On light surfaces the accent is therefore **fill-first**:
 
-The mitigation is restriction. On light surfaces, the accent is used
-only for:
+- **Solid fills** (large CTAs, the primary action on a surface) — the
+  `gold-9` fill carries **ink text** at ≈ 5:1, which clears 1.4.3. The
+  fill, not the gold edge, does the contrast work.
+- **Focus rings** — the gold ring is the brand signal, but a high-contrast
+  neutral halo (`sand-12`) is what carries the ≥ 3:1 boundary against the
+  page; the gold edge alone is never relied on.
+- **Recovery actions** (the gesture out of an error state).
 
-- Focus rings
-- Large CTAs (the primary action on a surface)
-- Recovery actions (the gesture out of an error state)
+The accent solid is **not** used as a hairline border, an icon stroke, an
+inline link, or any normal-size text on light — there the sub-3:1 gold
+fails. (Where gold genuinely must read *as text*, a much darker step is
+used, not the accent solid.) axe-core surfaces violations on any light
+surface that breaks this rule, and those violations are the right signal:
+the surface is misusing the accent, not the accent being wrong.
 
-It is **not** used for normal-size body text, links, inline emphasis,
-or any chrome that runs at the body type scale. axe-core will surface
-contrast violations on any light surface that breaks this rule, and
-those violations are the right signal — they mean the surface is
-misusing the accent, not that the accent is wrong.
+### Reverie Danger: the carve-out
 
-### Reverie Alarm: the carve-out
-
-The alarm exists because some moments cannot be communicated by weight
-alone without compromising user safety. There are exactly two such
-cases:
+The danger hue exists because some moments cannot be communicated by
+weight alone without compromising user safety. There are exactly two
+such cases:
 
 1. **Irreversible destructive confirmation.** The moment the user is
    about to take an action that cannot be undone — bulk delete a series,
-   overwrite curated metadata, wipe a tome's enrichment record. The
-   alarm appears on the confirm-destructive button, alongside typed-name
+   overwrite curated metadata, wipe a tome's enrichment record. Danger
+   appears on the confirm-destructive button, alongside typed-name
    confirmation and an undo window where one is feasible.
 
 2. **Unrecoverable system errors.** Errors meeting **both** criteria:
@@ -162,7 +222,7 @@ cases:
 
    Framing test for contributors: *will the user form a wrong mental
    model of "it's working" that survives until their next intentional
-   interaction with this surface?* If yes, alarm. If no, gold or
+   interaction with this surface?* If yes, danger. If no, gold or
    neutral.
 
    Qualifies: auth token expired (sync stops silently), database
@@ -171,40 +231,48 @@ cases:
    (loud, scoped, no silent downstream effect); Kobo offline on an
    ad-hoc retry (recoverable, no corruption).
 
-**Alarm colour is reinforcement, not the primary channel.** Destructive
+**Danger colour is reinforcement, not the primary channel.** Destructive
 intent and unrecoverable error must always be communicated through copy,
-friction, and iconography first; Reverie Alarm makes those signals
+friction, and iconography first; Reverie Danger makes those signals
 louder for users who can perceive it. Every red has this problem —
 roughly 1 in 12 men with deuteranopia/protanopia will read the hue as
 muddy brown — which is acceptable here precisely because the design
 never depended on the colour.
 
-**Where alarm appears.** As fill, border, or icon — never as body text.
-Toasts and dialogs render text in Ink (or Cream on dark mode); the
-alarm is the accent bar, the button fill, the icon stroke. This
-restriction follows the same logic as the gold light-theme constraint
-above.
+**Where danger appears.** As fill, border, or icon — never as body text.
+Toasts and dialogs render text in Ink (or Cream on dark mode); danger is
+the accent bar, the button fill, the icon stroke. This restriction
+follows the same logic as the gold light-theme constraint above.
 
 #### Contrast (verified)
 
-- `#BC2937` on Parchment `#E8DCC2`: **4.4:1**. Passes WCAG 2.2 1.4.11
-  (UI component, 3:1) with margin. Marginally fails 1.4.3 normal text
-  (4.5:1) — which is why alarm is fill-only on light surfaces.
-- `#F26C7B` on Ink `#0E0D0A`: **6.7:1**. Passes 1.4.3 normal text and
-  1.4.11 with comfortable margin.
+Reverie Danger is anchored on the **solid** `#B91C1C` (the destructive /
+error fill), which always carries white text — it is never a body-text
+colour on the page itself.
 
-#### Hue and lightness
+- White text on `#B91C1C`: **6.47:1**. Passes WCAG 2.2 1.4.3 normal
+  text — this is the destructive-button / error-toast fill, and the
+  pairing the colour is actually read through.
+- Where danger must read as *text or icon* against the canvas (an inline
+  error label, a status glyph), it uses the high-contrast danger text
+  tone of the same red, theme-tuned to clear 4.5:1 on each canvas — a
+  deep red on Parchment, a lifted coral on Ink. The solid `#B91C1C` is
+  never used as text directly.
+- As a 1px control border or icon stroke, `#B91C1C` is ≈ 4.8:1 on
+  Parchment but only ≈ 3.0:1 on Ink — at the 1.4.11 floor, no margin. For
+  danger as a *stroke or icon* on dark, prefer the high-contrast danger
+  text tone (the lifted coral) over the raw solid.
 
-Both values sit at hue 354° — slightly cool of pure red so they cannot
-be misread as warm cousins of gold. Light mode uses lightness ~45%;
-dark mode lifts to ~69% with the hue held constant. The same coat, two
-modes — not two alarms.
+#### One red, theme-tuned by the ramp
 
-**Lightness is reserved for mode (light/dark); hue is the tunable for
-distinguishability.** Adjustment of last resort: if alarm/gold
-separation reads ambiguous on Ink at icon sizes, shift Reverie Alarm
-hue cooler (toward 350°) before reducing lightness. Reducing lightness
-breaks the same-coat principle and quietly creates a severity ladder.
+Reverie Danger is one hue, not a severity palette. The solid (`#B91C1C`)
+is held identical across light and dark so the destructive action reads
+the same in both rooms; only the surrounding tones used for text,
+borders, and hover/disabled retune per theme to hold contrast (see
+*The generated palette* above — danger is one of the three generated
+scales). If danger and gold ever read ambiguously together at icon
+sizes, separate them by weight, position, or iconography — never by
+inventing a second red or a warmer/cooler danger variant.
 
 ### Rejected accents
 
@@ -213,26 +281,26 @@ minutes, not an hour.
 
 | Rejected                                                  | Why                                                                                                                                                                                              | Use instead                                     |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
-| Warning amber / yellow                                    | Severity ladders always grow once cracked; amber dilutes the alarm signal and invents a "soft alarm" register                                                                                    | Copy, friction, position                        |
+| Warning amber / yellow                                    | Severity ladders always grow once cracked; amber dilutes the danger signal and invents a "soft danger" register                                                                                    | Copy, friction, position                        |
 | Success green                                             | Completion is gold weight, not a new colour. A green checkmark drifts the brand into generic-dashboard territory                                                                                 | Gold checkmark, weight shift, micro-motion      |
 | Info blue                                                 | "Did you know" patterns rarely earn their screen. If something needs saying, say it in body type                                                                                                 | Plain text or omit                              |
-| Red severity tints (red-50, red-200, etc.)                | One alarm = one colour. Tints invent a gradient that doesn't exist and reintroduce the severity-ladder problem from a different direction                                                       | Solid Reverie Alarm, opacity for hover/disabled |
-| Branded/muted alarm red (burgundy, oxblood, muted carmine) | Alarm is punctuation; it works *because* it doesn't try to fit. Burgundy reads decorative and weakens the stop signal. The carve-out's whole premise is that this token is not asked to be on-brand | Use the unbranded red as specified above        |
+| Red severity tints (red-50, red-200, etc.)                | One danger hue = one colour. Tints invent a gradient that doesn't exist and reintroduce the severity-ladder problem from a different direction                                                  | Solid Reverie Danger, opacity for hover/disabled |
+| Branded/muted danger red (burgundy, oxblood, muted carmine) | Danger is punctuation; it works *because* it doesn't try to fit. Burgundy reads decorative and weakens the stop signal. The carve-out's whole premise is that this token is not asked to be on-brand | Use the unbranded red as specified above        |
 
 ### Implementation note
 
 The Tailwind config must use `theme.colors` — which **replaces** the
 default ramps — rather than `theme.extend.colors`, which **adds** to
 them. With `extend`, `text-red-500` and the rest of the default red,
-blue, green, and yellow ramps continue to resolve, and the alarm
+blue, green, and yellow ramps continue to resolve, and the danger
 carve-out leaks at every utility-class call site. Default ramps must be
 absent, not overridden. The difference between a wall and a fence.
 
-Reverie Alarm is importable only from the two component contexts that
-need it: the destructive-confirm component and the system-error toast.
-Lint and review enforce that boundary across CSS values, Tailwind
-utilities, SVG fills/strokes, and inline styles. Image assets (PNG/JPG)
-cannot be linted and rely on review.
+Reverie Danger is reserved for destructive/error use — its home is the
+destructive-confirm component and the system-error toast; decorative use
+is out of bounds. Review enforces that reservation across CSS values,
+Tailwind utilities, SVG fills/strokes, and inline styles; image assets
+(PNG/JPG) cannot be linted and rely on review.
 
 ---
 
@@ -299,13 +367,13 @@ holds.
 - Do not rotate, skew, or distort the glyph.
 - Do not apply effects (shadow, glow, gradient, bevel, outline).
 - Do not use the wordmark alone as a primary mark.
-- Do not introduce additional accents or alarms. Gold is the only
-  accent; Reverie Alarm is the only alarm. See the rejected-accents
+- Do not introduce additional accents or state hues. Gold is the only
+  accent; Reverie Danger is the only danger hue. See the rejected-accents
   list in §4 for what has been considered and rejected.
-- Do not use Reverie Gold on Parchment for normal-size body text. The
-  light-theme accent (`#8E6F38`) passes WCAG large-text contrast only;
-  body type on a gold fill fails AA. Restrict to focus rings, large
-  CTAs, and recovery actions on light surfaces.
+- Do not use Reverie Gold on Parchment for normal-size body text, links,
+  or hairline borders. The light-theme accent (`#A77C00`, `gold-9`) is
+  sub-3:1 as a line or text; use it as a fill (with ink text) or a focus
+  ring (with the neutral halo), not as body type.
 
 ---
 

@@ -60,9 +60,11 @@ single-color print, or construction reasoning.
   cut at y=17 (53% from top — *just below* visual center, intentionally).
 - **Tagline.** "Your library, catalogued." British spelling locked. Always
   sentence case, comma, trailing full stop.
-- **Color.** Reverie Gold `#C9A961` is the only accent. No hue-coded states
-  (no red errors, no blue links, no green success). State communicates
-  through weight, opacity, and gold accent.
+- **Color.** Reverie Gold `#C9A961` is the only accent; Reverie Danger
+  `#B91C1C` is the only state hue (destructive/error, fill-only, never body
+  text). No other hue-coded states (no blue links, no green success). The
+  palette is generated as three Radix 12-step scales (neutral, gold, danger)
+  for both themes from the brand anchors — UI names roles, never raw hex.
 - **Typography.** Author (display) + Satoshi (body) + JetBrains Mono
   (monospace metadata). All locked. Sans-only.
 
