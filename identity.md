@@ -189,9 +189,13 @@ On light surfaces the accent is therefore **fill-first**:
 - **Solid fills** (large CTAs, the primary action on a surface) — the
   `gold-9` fill carries **ink text** at ≈ 5:1, which clears 1.4.3. The
   fill, not the gold edge, does the contrast work.
-- **Focus rings** — the gold ring is the brand signal, but a high-contrast
-  neutral halo (`sand-12`) is what carries the ≥ 3:1 boundary against the
-  page; the gold edge alone is never relied on.
+- **Focus rings** — a single 2px ring in the text-grade gold (`gold-11`),
+  which carries the ≥ 3:1 non-text boundary unaided on both canvases
+  (≈ 7:1 on Parchment, ≈ 10:1 on Ink); no neutral halo. An earlier spec
+  ringed `gold-9` inside a `sand-12` halo to rescue its 2.8:1 on
+  Parchment; moving the ring itself to `gold-11` removed the need for
+  the halo and the second concentric ring it painted around controls
+  that carry their own focus styles.
 - **Recovery actions** (the gesture out of an error state).
 
 The accent solid is **not** used as a hairline border, an icon stroke, an
@@ -372,8 +376,9 @@ holds.
   list in §4 for what has been considered and rejected.
 - Do not use Reverie Gold on Parchment for normal-size body text, links,
   or hairline borders. The light-theme accent (`#A77C00`, `gold-9`) is
-  sub-3:1 as a line or text; use it as a fill (with ink text) or a focus
-  ring (with the neutral halo), not as body type.
+  sub-3:1 as a line or text; use it as a fill (with ink text), not as
+  body type. Focus rings use the text-grade `gold-11`, which needs no
+  halo.
 
 ---
 
