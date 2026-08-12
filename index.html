@@ -70,15 +70,23 @@
     align-items: center;
     gap: 24px;
   }
+  /* Lockup metrics are §6 of identity.md: glyph 1.40em, gap 0.48em,
+     wordmark left-pad 0.32em. The type size lives on the container so all
+     three resolve against it. */
   .lockup-mini {
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-  }
-  .lockup-mini .word {
     font-family: Satoshi, system-ui, sans-serif;
     font-weight: 700;
     font-size: 22px;
+    gap: 0.48em;
+  }
+  .lockup-mini svg {
+    width: 1.4em;
+    height: 1.4em;
+    flex: none;
+  }
+  .lockup-mini .word {
     letter-spacing: 0.32em;
     text-transform: uppercase;
     padding-left: 0.32em;
@@ -351,7 +359,7 @@
   </div>
   <div class="header-right">
     <div class="lockup-mini">
-      <svg width="38" height="38" viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" fill="#C9A961"/><rect x="8" y="17" width="16" height="2" fill="#14120E"/></svg>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 4h24v24H4V4zm4 13h16v2H8v-2z" fill="#C9A961"/></svg>
       <span class="word">REVERIE</span>
     </div>
   </div>
