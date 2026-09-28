@@ -340,9 +340,21 @@ The canonical brand expression is the lockup: glyph + wordmark, inline.
 | Rule                | Spec                                                   |
 | ------------------- | ------------------------------------------------------ |
 | Layout              | Glyph left, wordmark right, baseline-aligned to center |
-| Glyph size          | 0.95 × cap-height                                      |
-| Gap                 | 0.5 × cap-height (≈ 14px at 28px wordmark size)        |
+| Glyph size          | 1.40em                                                 |
+| Gap                 | 0.48em                                                 |
 | Wordmark left-pad   | 0.32em (compensates for tracking optical balance)      |
+
+All three are multiples of the wordmark's type size. The gap and the
+left-pad sit side by side, so the glyph and the first letterform are
+separated by 0.80em of optical space; an implementation that folds the
+left-pad into its own tracking must still hit that total.
+
+These values are measured from `lockup/lockup-on-dark.svg`, which is the
+construction of record. In it the glyph is exactly twice the wordmark's
+cap height and is centred on the cap band. Cap height is stated here as
+an observation, not as the unit: it is not addressable in every rendering
+context, and deriving the numbers from it invites a font-metric
+dependency the lockup does not need.
 
 There are three lockup forms, ranked by canonicality:
 
